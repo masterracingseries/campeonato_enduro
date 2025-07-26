@@ -54,8 +54,10 @@
 
         .logo {
             max-width: 180px;
+            z-index: 1001; /* Para que el logo quede sobre el menu movil si se superponen */
         }
-
+        
+        /* Estilos del menú para Desktop */
         .main-nav ul {
             margin: 0;
             padding: 0;
@@ -78,6 +80,16 @@
             color: white;
         }
         
+        /* Icono de Hamburguesa (oculto en desktop) */
+        .hamburger-btn {
+            display: none;
+            cursor: pointer;
+            font-size: 2rem;
+            color: white;
+            background: none;
+            border: none;
+        }
+
         /* Dropdown para Resultados */
         .dropdown {
             position: relative;
@@ -308,32 +320,57 @@
             filter: grayscale(0%) brightness(1);
         }
         
-        /* --- RESPONSIVE --- */
+        /* --- ESTILOS RESPONSIVE PARA MÓVILES --- */
         @media (max-width: 768px) {
-            .main-header {
-                flex-direction: column;
-            }
-            .main-nav ul {
-                flex-direction: column;
-                width: 100%;
-                text-align: center;
-            }
             .hero-section .hero-text h1 {
                 font-size: 2.5rem;
             }
              .hero-section .hero-text p {
                 font-size: 1.2rem;
             }
-        }
 
+            /* Ocultar menú de desktop y mostrar botón de hamburguesa */
+            .main-nav .nav-links {
+                display: none; /* Ocultar la lista de enlaces por defecto */
+                flex-direction: column;
+                width: 100%;
+                position: absolute;
+                top: 70px; /* Altura del header */
+                left: 0;
+                background-color: var(--color-dark-bg);
+                text-align: center;
+            }
+            
+            .main-nav .nav-links.active {
+                display: flex; /* Mostrar la lista cuando tenga la clase 'active' */
+            }
+            
+            .main-nav .dropdown:hover .dropdown-content {
+                display: none; /* Desactivar hover del dropdown en movil */
+            }
+            
+            .hamburger-btn {
+                display: block; /* Mostrar el botón de hamburguesa */
+            }
+
+            /* --- CAMBIO DE ORDEN EN RESULTADOS PARA MÓVIL --- */
+            .ranking-top3 {
+                flex-direction: column;
+                align-items: center;
+            }
+            .ranking-top3 .p1 { order: 1; } /* 1er Lugar arriba */
+            .ranking-top3 .p2 { order: 2; } /* 2do Lugar al medio */
+            .ranking-top3 .p3 { order: 3; } /* 3er Lugar abajo */
+        }
     </style>
 </head>
 <body>
-
     <header class="main-header">
         <a href="#"><img src="auspicio_1.jpeg" alt="Logo Patagonia Moto Club" class="logo"></a>
         <nav class="main-nav">
-            <ul>
+            <button class="hamburger-btn" id="hamburger-btn">☰</button>
+            
+            <ul class="nav-links" id="nav-links">
                 <li><a href="#inicio">Inicio</a></li>
                 <li><a href="#reglamento">Reglamento</a></li>
                 <li class="dropdown">
@@ -480,5 +517,15 @@
         </div>
     </footer>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburgerBtn = document.getElementById('hamburger-btn');
+            const navLinks = document.getElementById('nav-links');
+
+            hamburgerBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+        });
+    </script>
 </body>
 </html>
